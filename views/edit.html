@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css">
+		<link rel="stylesheet" href="https://water-css-custom.piemadd.repl.co/style.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>New Entry | <%= siteName %></title>
+		<script async defer data-domain="replit.sh" src="https://plausible.io/js/plausible.js"></script>
+	</head>
+	<body>
+		<form class="form-horizontal" action="/edit" method="post">
+			<fieldset>
+				<legend>New Entry | <%= siteName %></legend>
+				<p>Hey there <%= user_name %>, please edit the URL below.</p>
+				<p><a href="/">View Your Dashboard</a></p>
+				<%= error %>
+				<div>
+					<label for="url">Link:</label>  
+					<div>
+						<input type="url" name="url" id="url" value="<%= current_url %>" placeholder="https://example.com" pattern="https://.*" size="30" required> 
+					</div>
+				</div>
+				<div>
+					<label for="key">ID: (Read-Only)</label>  
+					<div>
+						<input type="key" name="key" id="key" value="<%= current_key %>" placeholder="aaaaaaaa" size="30" readonly> 
+					</div>
+				</div>
+				<div>
+					<label for="submit"></label>
+					<div>
+						<input type="submit" value="Submit">
+					</div>
+				</div>
+			</fieldset>
+		</form>
+	</body>
+</html>
