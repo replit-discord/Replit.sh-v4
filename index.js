@@ -11,8 +11,8 @@ const log = require('fancy-log');
 const app = express();
 const db = new Database();
 
-const siteName = "Replit.sh";
-const siteURL = "https://beta.replit.sh"
+const siteName = "\\ (•◡•) /";
+const siteURL = "https://replit.sh"
 const regex = new RegExp('^https:\/\/replit.com\/@([^\/#\?]+?)(?:\/([^\/#\?]+?))[\/#\?]?$');
 const getJSON = bent('json')
 
@@ -32,6 +32,11 @@ app.get('/', async (req, res) => {
 				await db.set(`user_id_${user_id}`, {});
 			};
 			let urls = await db.get(`user_id_${user_id}`);
+			let out_list = {};
+			for (let i in urls) {
+				let value = await db.get(urls[i]);
+				out_list[urls[i]] = value;
+			}
 			let view_name = 'dashboard.html'
 			let json = {
 				siteName: siteName,
@@ -39,6 +44,7 @@ app.get('/', async (req, res) => {
 				user_name: user_name,
 				siteUrl: siteURL,
 				user_urls: urls,
+				urls_with_keys: out_list,
 				error: ""
 			}
 			log(`Dashboard - Returned ${view_name}`)
@@ -278,6 +284,7 @@ app.post('/edit', async (req, res) => {
 
 app.get('/delete/:id', async (req, res) => {
 	try {
+		let id = req.params.id.replace('short_url_', '')
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
 		if (users.includes(parseInt(req.headers['x-replit-user-id']))) {
@@ -287,8 +294,8 @@ app.get('/delete/:id', async (req, res) => {
 				user_id: user_id,
 				user_name: user_name,
 				siteUrl: siteURL,
-				current_url: await db.get('short_url_' + req.params.id),
-				current_key: req.params.id,
+				current_url: await db.get('short_url_' + id),
+				current_key: id,
 				error: ""
 			}
 			log(`Returned ${view_name}`)
