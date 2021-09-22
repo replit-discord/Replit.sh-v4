@@ -18,10 +18,10 @@
 
 		<% var keysList = Object.keys(user_urls); for (var i = 0; i < keysList.length; i++) { %>
 			<tr>
-				<td><a href="<%= user_urls[keysList[i]].slice(-8) %>"><%= user_urls[keysList[i]].slice(-8) %></a></td>
+				<td><a href="<%= user_urls[keysList[i]].slice(10) %>"><%= user_urls[keysList[i]].slice(10) %></a></td>
 				<td><a href="<%= urls_with_keys[user_urls[keysList[i]]] %>"><%= urls_with_keys[user_urls[keysList[i]]] %></a></td>
-				<td><a href="<%= siteUrl %>/delete/<%= user_urls[keysList[i]].slice(-8) %>">Delete</a></td>
-				<td><a href="<%= siteUrl %>/edit/<%= user_urls[keysList[i]].slice(-8) %>">Edit</a></td>
+				<td><a href="<%= siteUrl %>/delete/<%= user_urls[keysList[i]].slice(10) %>">Delete</a></td>
+				<td><a href="<%= siteUrl %>/edit/<%= user_urls[keysList[i]].slice(10) %>">Edit</a></td>
 			</tr>    
 		<% } %>
 

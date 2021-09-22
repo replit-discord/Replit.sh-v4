@@ -23,6 +23,7 @@ app.use(express.urlencoded({
 const users = JSON.parse(process.env.IDS)
 
 app.get('/', async (req, res) => {
+	res.send('Replit.sh is currently down for maintnence')
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -74,6 +75,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/new', async (req, res) => {
+	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -104,6 +106,7 @@ app.get('/new', async (req, res) => {
 	}
 });
 app.post('/new', async (req, res) => {
+	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -135,7 +138,7 @@ app.post('/new', async (req, res) => {
 			}
 			await db.set("short_url_" + id, req.body.url).then(() => {
 				db.get(`user_id_${user_id}`).then(user_urls => {
-					user_urls[id] = req.body.url;
+					user_urls.push(id);
 					db.set(`user_id_${user_id}`, user_urls);
 				});
 			});
@@ -182,6 +185,7 @@ app.post('/new', async (req, res) => {
 });
 
 app.get('/edit/:id', async (req, res) => {
+	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -216,6 +220,7 @@ app.get('/edit/:id', async (req, res) => {
 });
 
 app.post('/edit', async (req, res) => {
+	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -224,12 +229,9 @@ app.post('/edit', async (req, res) => {
 			await db.list("short_url_").then(matches => {
 				if (matches.includes("short_url_" + id)) {
 					db.get(`user_id_${user_id}`).then(user_urls => {
-						if (Object.keys(user_urls).includes(id)) {
+						if (user_urls.includes(`short_url_${id}`)) {
 							db.set("short_url_" + id, req.body.url).then(() => {
-								db.get(`user_id_${user_id}`).then(user_urls => {
-									user_urls[id] = req.body.url;
-									db.set(`user_id_${user_id}`, user_urls);
-									let view_name = 'done.html'
+								let view_name = 'done.html'
 								let json = {
 									siteName: siteName,
 									user_id: user_id,
@@ -240,7 +242,6 @@ app.post('/edit', async (req, res) => {
 								}
 								log(`Returned ${view_name}`)
 								fs.readFile(`views/${view_name}`, 'utf8', async (err, data) => res.end(ejs.render(data, json)));
-								});
 							});
 						} else {
 							let view_name = 'error.html'
@@ -283,6 +284,7 @@ app.post('/edit', async (req, res) => {
 });
 
 app.get('/delete/:id', async (req, res) => {
+	res.redirect('/');
 	try {
 		let id = req.params.id.replace('short_url_', '')
 		let user_id = req.headers['x-replit-user-id']
@@ -317,6 +319,7 @@ app.get('/delete/:id', async (req, res) => {
 });
 
 app.post('/delete', async (req, res) => {
+	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -325,10 +328,10 @@ app.post('/delete', async (req, res) => {
 			await db.list("short_url_").then(matches => {
 				if (matches.includes("short_url_" + id)) {
 					db.get(`user_id_${user_id}`).then(user_urls => {
-						if (Object.keys(user_urls).includes(id)) {
+						if (user_urls.includes(`short_url_${id}`)) {
 							db.delete("short_url_" + id, req.body.url).then(() => {
 								db.get(`user_id_${user_id}`).then(user_urls => {
-									delete user_urls[id];
+									user_urls.splice(user_urls.indexOf(id), 1);
 									db.set(`user_id_${user_id}`, user_urls);
 									res.redirect('/');
 								});
@@ -374,6 +377,7 @@ app.post('/delete', async (req, res) => {
 });
 
 app.get('/:id', async (req, res) => {
+	res.redirect('/');
 	try {
 		await db.get('short_url_' + req.params.id).then(url => {
 			if (url.startsWith("https://replit.com/") && regex.test(url)) {
