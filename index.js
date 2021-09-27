@@ -23,7 +23,6 @@ app.use(express.urlencoded({
 const users = JSON.parse(process.env.IDS)
 
 app.get('/', async (req, res) => {
-	res.send('Replit.sh is currently down for maintnence')
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -75,7 +74,6 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/new', async (req, res) => {
-	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -106,7 +104,6 @@ app.get('/new', async (req, res) => {
 	}
 });
 app.post('/new', async (req, res) => {
-	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -185,7 +182,6 @@ app.post('/new', async (req, res) => {
 });
 
 app.get('/edit/:id', async (req, res) => {
-	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -220,7 +216,6 @@ app.get('/edit/:id', async (req, res) => {
 });
 
 app.post('/edit', async (req, res) => {
-	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -284,7 +279,6 @@ app.post('/edit', async (req, res) => {
 });
 
 app.get('/delete/:id', async (req, res) => {
-	res.redirect('/');
 	try {
 		let id = req.params.id.replace('short_url_', '')
 		let user_id = req.headers['x-replit-user-id']
@@ -319,7 +313,6 @@ app.get('/delete/:id', async (req, res) => {
 });
 
 app.post('/delete', async (req, res) => {
-	res.redirect('/');
 	try {
 		let user_id = req.headers['x-replit-user-id']
 		let user_name = req.headers['x-replit-user-name']
@@ -377,7 +370,6 @@ app.post('/delete', async (req, res) => {
 });
 
 app.get('/:id', async (req, res) => {
-	res.redirect('/');
 	try {
 		await db.get('short_url_' + req.params.id).then(url => {
 			if (url.startsWith("https://replit.com/") && regex.test(url)) {
