@@ -406,9 +406,9 @@ app.get('/:id', async (req, res) => {
 		fs.readFile(`views/${view_name}`, 'utf8', async (err, data) => res.end(ejs.render(data, json)));
 	}
 });
-
-app.listen(8008, '0.0.0.0', () => {
-	console.log("We are live on 8008");
+//Specify IP to localhost is unnesesary, isn't it?
+app.listen(8008, () => {
+	console.log("We are live! On port :8008");
 })
 
 //getting images
